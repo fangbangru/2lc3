@@ -1,3 +1,30 @@
+Theorem “Zero is unique least element”:
+    a ≤ 0  ≡  a = 0
+Proof:
+  By cases: `a = 0`, `a = suc (pred a)`
+    Completeness: By “Zero or successor of predecessor”
+    Case `a = 0`:
+        a ≤ 0 
+      =⟨ Assumption `a = 0` ⟩
+        0 ≤ 0 
+      =⟨ “Reflexivity of ≤” ⟩
+        true
+      =⟨ “Reflexivity of =” ⟩
+        0 = 0
+      =⟨ Assumption `a = 0` ⟩
+        a = 0 
+    Case `a = suc (pred a)`:
+        a ≤ 0 ≡ a = 0
+      =⟨ Assumption `a = suc (pred a)`⟩ 
+        suc (pred a) ≤ 0 ≡ suc (pred a) = 0
+      =⟨ “Successor is not at most zero” ⟩
+        false ≡ suc (pred a) = 0
+      =⟨ “Zero is not successor” ⟩
+        false ≡ false
+      =⟨ “Identity of ≡” ⟩ 
+        true
+
+        
 Theorem (3.82) (3.82c) “Transitivity of ⇒”: (p ⇒ q) ∧ (q ≡ r) ⇒ (p ⇒ r)
 Proof:
     (p ⇒ q) ∧ (q ≡ r) ⇒ (p ⇒ r)
@@ -580,3 +607,116 @@ Proof:
         x + 2 · x = 3 · x
       =⟨ “Multiplying by 2” ⟩
         x + x + x = 3 · x — This is “Multiplying by 3”  
+
+
+Theorem “M1.3.3”:
+   ∃ k : ℤ • ∃ n : ℤ • 3 · k + 7 · n = 32
+Proof:
+  ∃ k : ℤ • ∃ n : ℤ • 3 · k + 7 · n = 32
+⇐⟨“∃-Introduction”⟩
+  (∃ n : ℤ • 3 · k + 7 · n = 32)[k ≔ 6]
+≡⟨Substitution⟩
+  (∃ n : ℤ • 3 · 6 + 7 · n = 32)
+⇐⟨“∃-Introduction”⟩
+  (3 · 6 + 7 · n = 32) [n ≔ 2]
+≡⟨Substitution⟩
+  3 · 6 + 7 · 2 = 32
+≡⟨Fact `3 · 6 = 18`⟩
+  18 + 7 · 2 = 32
+≡⟨Fact `2 · 7 = 14`⟩
+  18 + 14 = 32
+≡⟨Fact `18 + 14 = 32`⟩
+  32 = 32
+≡⟨“Reflexivity of =”⟩
+  true
+
+  
+1:  Theorem “M1.3.4”:
+ 2:        x = f k ∧ y = f (k + 1)
+ 3:      ⇒⁅ x := y ⍮ k := k + 1 ⍮ y := f (k + 1) ⁆
+ 4:        x = f k ∧ y = f (k + 1)
+ 5:  Proof:
+ 6:      x = f k ∧ y = f (k + 1)
+ 7:    ≡⟨?⟩
+ 8:      x = f (k + 1) ∧ f (k + 1 ) = f (k + 1)
+ 9:    ≡⟨“Cancellation of +”⟩
+10:      x = f (k + 1) ∧ f (k + 1 + 1) = f (k + 1 + 1)
+11:    ⇒⁅ k := k + 1 ⁆ ⟨ “Assignment” with substitution ⟩
+12:      x = f k ∧ f (k + 1) = f (k + 1)
+13:    ⇒⁅ y := f (k + 1) ⁆ ⟨ “Assignment” with substitution ⟩
+14:      x = f k ∧ y = f (k + 1)
+
+
+
+Theorem “Split off term” “Split off term at top”:
+    (∏ i : ℕ ❙ i < suc n • E) = (∏ i : ℕ ❙ i < n • E) · E[i ≔ n]
+Proof:
+        (∏ i ❙ i < suc n • E)
+    =⟨ “Zero is least element”, “Identity of ∧” ⟩
+        (∏ i ❙ 0 ≤ i < suc n • E)
+    =⟨ Subproof for `0 ≤ i < suc n ≡ 0 ≤ i < n  ∨  i = n`:
+            By “Split range at top” with “Zero is least element”
+      ⟩
+        (∏ i ❙ 0 ≤ i < n  ∨  i = n • E)
+    =⟨ “Zero is least element” , “Identity of ∧” ⟩
+        (∏ i ❙ i < n  ∨  i = n • E)
+    =⟨ “Disjoint range split for ∏”
+        with subproof for `∀ i • i < n  ∧  i = n  ≡ false`:
+            For any `i`:
+                 i < n  ∧  i = n
+              ≡⟨ Substitution ⟩
+                 (z < n)[z ≔ i]  ∧  i = n
+              ≡⟨ “Replacement” (3.84a) , Substitution ⟩
+                 n < n  ∧  i = n
+              ≡⟨ “Irreflexivity of <”, “Zero of ∧” ⟩
+                 false
+      ⟩
+        (∏ i ❙ i < n • E) · (∏ i ❙ i = n • E)
+    =⟨ “One-point rule for ∏” ⟩
+        (∏ i ❙ i < n • E) · E[i ≔ n]
+
+Theorem “Split off term” “Split off term at top”:
+    m ≤ n ⇒
+    (∏ i ❙ m ≤ i < suc n • E) = (∏ i ❙ m ≤ i < n • E) · E[i ≔ n]
+Proof:
+  Assuming `m ≤ n`:
+        (∏ i ❙ m ≤ i < suc n • E)
+    =⟨ “Split range at top” with Assumption `m ≤ n` ⟩
+        (∏ i ❙ m ≤ i < n  ∨  i = n • E)
+    =⟨ “Disjoint range split for ∏”
+       with subproof for `∀ i • m ≤ i < n  ∧  i = n  ≡ false`:
+           For any `i`:
+                m ≤ i < n  ∧  i = n
+             ≡⟨ Substitution ⟩
+                (m ≤ z < n)[z ≔ i]  ∧  i = n
+             ≡⟨ “Replacement” (3.84a) , Substitution ⟩
+                m ≤ n < n  ∧  i = n
+             ≡⟨ “Irreflexivity of <”, “Zero of ∧” ⟩
+                false
+      ⟩
+        (∏ i ❙ m ≤ i < n • E) · (∏ i ❙ i = n • E)
+    =⟨ “One-point rule for ∏” ⟩
+        (∏ i ❙ m ≤ i < n • E) · E[i ≔ n]
+
+Theorem “Split off term at top using ≤”:
+    (∏ i ❙ i ≤ suc n • E) = (∏ i ❙ i ≤ n • E) · E[i ≔ suc n]
+Proof:
+    (∏ i ❙ i ≤ suc n • E)
+  =⟨ “Definition of ≤ in terms of <” ⟩ 
+    (∏ i ❙ i < suc n ∨ i = suc n • E)
+  =⟨ “Disjoint range split for ∏”  
+      with subproof for `∀ i • i < suc n ∧ i = suc n ≡ false`:
+        For any `i : ℕ`:
+            i < suc n ∧ i = suc n
+          =⟨ Substitution ⟩
+            (z < suc n)[z ≔ i] ∧ i = suc n
+          =⟨ “Replacement” (3.84a), Substitution ⟩
+            suc n < suc n ∧ i = suc n
+          =⟨ “Irreflexivity of <” , “Zero of ∧” ⟩
+            false   
+    ⟩ 
+    (∏ i ❙ i < suc n • E) · (∏ i ❙ i = suc n • E)
+  =⟨ “Definition of ≤ in terms of `suc` and <” 
+    , “One-point rule for ∏” ⟩
+     (∏ i ❙ i ≤ n • E) · E[i ≔ suc n]
+
