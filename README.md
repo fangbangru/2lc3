@@ -1,3 +1,83 @@
+Theorem “Implication strengthening”:
+    p ⇒ q  ≡  p ⇒ p ∧ q
+Proof:
+    p ⇒ q ≡ p ⇒ p ∧ q
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ q ≡ q ≡ p ⇒ p ∧ q
+  =⟨ “Golden rule” ⟩ 
+    p ∨ q ≡ q ≡ p ⇒ (p ≡ q ≡ p ∨ q)
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ q ≡ q ≡ p ∨ (p ≡ q ≡ p ∨ q) ≡ (p ≡ q ≡ p ∨ q)
+  =⟨ “Distributivity of ∨ over ≡” ⟩ 
+    p ∨ q ≡ q ≡ p ∨ p ≡ p ∨ q ≡ p ∨ p ∨ q ≡ p ≡ q ≡ p ∨ q
+  =⟨ “Idempotency of ∨” ⟩ 
+    p ∨ q ≡ q ≡ p ≡ p ∨ q ≡ p ∨ q ≡ p ≡ q ≡ p ∨ q
+  =⟨ “Identity of ≡” ⟩ 
+    true
+
+Theorem (3.64) “Self-distributivity of ⇒”:
+    p ⇒ (q ⇒ r) ≡ (p ⇒ q) ⇒ (p ⇒ r)
+Proof:
+    p ⇒ (q ⇒ r) ≡ (p ⇒ q) ⇒ (p ⇒ r)
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ (q ∨ r ≡ r) ≡ (q ∨ r ≡ r) ≡ (p ∨ q ≡ q) ⇒ (p ∨ r ≡ r)
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ (q ∨ r ≡ r) ≡ (q ∨ r ≡ r) ≡ (p ∨ q ≡ q) ∨ (p ∨ r ≡ r) ≡ (p ∨ r ≡ r)
+  =⟨ “Distributivity of ∨ over ≡” ⟩ 
+    p ∨ q ∨ r ≡ p ∨ r ≡ (q ∨ r ≡ r) ≡ (p ∨ q ≡ q) ∨ (p ∨ r ≡ r) ≡ (p ∨ r ≡ r)
+  =⟨ “Associativity of ≡” ⟩ 
+    p ∨ q ∨ r ≡ p ∨ r ≡ q ∨ r ≡ r ≡ (p ∨ q ≡ q) ∨ (p ∨ r ≡ r) ≡ p ∨ r ≡ r
+  =⟨ “Distributivity of ∨ over ≡” ⟩ 
+    p ∨ q ∨ r ≡ p ∨ r ≡ q ∨ r ≡ r ≡ (p ∨ q ≡ q) ∨ p ∨ r ≡ (p ∨ q ≡ q) ∨ r ≡ p ∨ r ≡ r
+  =⟨ “Distributivity of ∨ over ≡” ⟩ 
+    p ∨ q ∨ r ≡ p ∨ r ≡ q ∨ r ≡ r ≡ p ∨ q ∨ p ∨ r ≡ q ∨ p ∨ r ≡ p ∨ q ∨ r ≡ q ∨ r ≡ p ∨ r ≡ r
+  =⟨ “Identity of ≡” ⟩ 
+    p ∨ q ∨ r ≡ true ≡ true ≡ true ≡ p ∨ q ∨ p ∨ r ≡ true
+  =⟨ “Idempotency of ∨” ⟩ 
+    p ∨ q ∨ r ≡ true ≡ true ≡ true ≡ q ∨ p ∨ r ≡ true
+  =⟨ “Identity of ≡” ⟩ 
+    true
+
+
+Theorem (3.42) “Contradiction”: p ∧ ¬ p ≡ false
+Proof:
+    p ∧ ¬ p ≡ false
+  ≡ ⟨ “Golden rule” ⟩
+    (p ≡ (¬ p ≡ p ∨ ¬ p)) ≡ false
+  ≡ ⟨ (3.15) ⟩
+    (p ≡ (¬ p ≡ p ∨ (p ≡ false))) ≡ false
+  ≡ ⟨ “Distributivity of ∨ over ≡” ⟩
+    (p ≡ (¬ p ≡ p ∨ p ≡ p ∨ false)) ≡ false
+  ≡ ⟨ “Idempotency of ∨” ⟩
+    (p ≡ (¬ p ≡ p ≡ p ∨ false)) ≡ false
+  ≡ ⟨ “Associativity of ≡” ⟩
+    p ≡ ¬ p ≡ p ≡ p ∨ false ≡ false
+  ≡ ⟨ “Identity of ∨” ⟩
+    p ≡ ¬ p ≡ p ≡ p ≡ false
+  ≡ ⟨ (3.15) ⟩
+    p ≡ ¬ p ≡ p ≡ ¬ p
+  ≡ ⟨ “Reflexivity of ≡” ⟩
+    true
+
+Theorem “Implication strengthening”:
+    p ⇒ q  ≡  p ⇒ p ∧ q
+Proof:
+    p ⇒ q ≡ p ⇒ p ∧ q
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ q ≡ q ≡ p ⇒ p ∧ q
+  =⟨ “Golden rule” ⟩ 
+    p ∨ q ≡ q ≡ p ⇒ (p ≡ q ≡ p ∨ q)
+  =⟨ “Definition of ⇒” ⟩ 
+    p ∨ q ≡ q ≡ p ∨ (p ≡ q ≡ p ∨ q) ≡ (p ≡ q ≡ p ∨ q)
+  =⟨ “Distributivity of ∨ over ≡” ⟩ 
+    p ∨ q ≡ q ≡ p ∨ p ≡ p ∨ q ≡ p ∨ p ∨ q ≡ p ≡ q ≡ p ∨ q
+  =⟨ “Idempotency of ∨” ⟩ 
+    p ∨ q ≡ q ≡ p ≡ p ∨ q ≡ p ∨ q ≡ p ≡ q ≡ p ∨ q
+  =⟨ “Identity of ≡” ⟩ 
+    true
+
+
+
 Theorem “Zero is unique least element”:
     a ≤ 0  ≡  a = 0
 Proof:
