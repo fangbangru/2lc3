@@ -515,3 +515,23 @@ Proof:
         S ˘ ⨾ S
       ⊆⟨ Assumption `univalent S` ⟩
         𝕀
+Theorem (14.260) “Monotonicity of ⩥”:  R ⊆ S  ⇒  R ⩥ A  ⊆  S ⩥ A
+Proof:
+  Assuming `R ⊆ S`:
+      R ⩥ A
+    =⟨ “Definition of ⩥ via ▷” ⟩
+      R ▷ ~ A
+    ⊆⟨ “Monotonicity of ▷” with Assumption `R ⊆ S` ⟩ 
+      S ▷ ~ A
+    =⟨ “Definition of ⩥ via ▷” ⟩
+      S ⩥ A
+Theorem (14.402) “Relation override”:
+    x ⦗ R ⊕ S ⦘ y  ≡  (¬ (x ∈ Dom S) ∧ x ⦗ R ⦘ y) ∨ x ⦗ S ⦘ y
+Proof:
+    x ⦗ R ⊕ S ⦘ y
+  ≡⟨ “Definition of ⊕” ⟩
+    x ⦗ (Dom S ⩤ R) ∪ S ⦘ y
+  ≡⟨ “Relation union” ⟩
+    x ⦗ (Dom S ⩤ R) ⦘ y ∨ x ⦗ S ⦘ y
+  ≡⟨ “Relationship via ⩤” ⟩
+    (¬ (x ∈ Dom S) ∧ x ⦗ R ⦘ y) ∨ x ⦗ S ⦘ y
