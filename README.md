@@ -355,3 +355,65 @@ Proof:
     (i = n) ∧ (s = ∑ j : ℕ ❙ j < n • f j)
   ⇒⟨ “Weakening” (3.76b) ⟩
     s = ∑ j : ℕ ❙ j < n • f j 
+
+Theorem “Domain of intersection”: Dom (R ∩ S) ⊆ Dom R ∩ Dom S
+Proof:
+  Using “Set inclusion”:
+    For any `x`:
+        x ∈ Dom (R ∩ S)
+      =⟨ “Membership in `Dom`” ⟩
+        ∃ y • x ⦗ R ∩ S ⦘ y
+      =⟨ “Relation intersection” ⟩
+        ∃ y • x ⦗ R ⦘ y ∧ x ⦗ S ⦘ y
+      =⟨ “Idempotency of ∧” ⟩
+        (∃ y • x ⦗ R ⦘ y ∧ x ⦗ S ⦘ y) ∧ (∃ y • x ⦗ R ⦘ y ∧ x ⦗ S ⦘ y)
+      ⇒⟨ “Monotonicity of ∧” with 
+         “Monotonicity of ∃” with
+         “Weakening” (3.76b) ⟩   
+        (∃ y • x ⦗ R ⦘ y) ∧ (∃ y • x ⦗ S ⦘ y)
+      =⟨ “Membership in `Dom`” ⟩   
+        x ∈ Dom R ∧ x ∈ Dom S
+      =⟨ “Intersection” ⟩ 
+        x ∈ Dom R ∩ Dom S
+Theorem (11.54): S - (T ∪ U) = (S - T) ∩ (S - U)
+Proof:
+  Using “Set extensionality”:
+    Subproof for `∀ e • e ∈ S - (T ∪ U) ≡ e ∈ (S - T) ∩ (S - U)`:
+      For any `e`:
+          e ∈ S - (T ∪ U)
+        ≡⟨ “Set difference” ⟩
+          e ∈ S ∧ ¬ (e ∈ T ∪ U)
+        ≡⟨ “Union” ⟩
+          e ∈ S ∧ ¬ (e ∈ T ∨ e ∈ U)
+        ≡⟨ “De Morgan” ⟩
+          e ∈ S ∧ (¬ (e ∈ T) ∧ ¬ (e ∈ U))
+        ≡⟨ “Associativity of ∧” ⟩
+          (e ∈ S ∧ ¬ (e ∈ T)) ∧ ¬ (e ∈ U)
+        ≡⟨ “Symmetry of ∧” ⟩
+          ¬ (e ∈ U) ∧ (e ∈ S ∧ ¬ (e ∈ T))
+        ≡⟨ “Idempotency of ∧” ⟩
+          ¬ (e ∈ U) ∧ (e ∈ S ∧ e ∈ S ∧ ¬ (e ∈ T))
+        ≡⟨ “Associativity of ∧” ⟩
+          (e ∈ S ∧ ¬ (e ∈ T)) ∧ (e ∈ S ∧ ¬ (e ∈ U))
+        ≡⟨ “Set difference” ⟩
+          (e ∈ S - T) ∧ (e ∈ S - U)
+        ≡⟨ “Intersection” ⟩
+          e ∈ (S - T) ∩ (S - U)
+Theorem “Cons is not empty”: ∀ xs • ∀ x •  x ◃ xs = 𝜖  ≡  false
+Proof:
+  Using “Snoc-induction over sequences”:
+    Subproof:
+         x ◃ 𝜖 = 𝜖
+       =⟨ “Definition of ◃” ⟩
+         𝜖 ▹ x = 𝜖
+       ≡⟨ “Snoc is not empty” ⟩
+         false
+    Subproof for `∀ xs : Seq A ❙ (∀ x •  x ◃ xs = 𝜖  ≡  false) • ∀ y • (∀ x •  x ◃ (xs ▹ y) = 𝜖  ≡  false)`:
+      For any `xs : Seq A` satisfying “Indhyp” `∀ x • x ◃ xs = 𝜖  ≡  false`:
+        For any `y : A`:
+          For any `x : A`:
+              x ◃ (xs ▹ y) = 𝜖
+            =⟨ “Definition of ◃” ⟩
+              (x ◃ xs) ▹ y = 𝜖
+            ≡⟨ “Snoc is not empty” ⟩
+              false
