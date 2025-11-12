@@ -184,3 +184,65 @@ Proof:
                 ∃ z • x ⦗ E ⦘ z ∧ z ⦗ F ⦘ y
               ⇒⟨ “Relation composition” ⟩
                 x ⦗ E ⨾ F ⦘ y
+Theorem “M2.1a”: R = R ⨾ (𝕀 ∩ R ˘ ⨾ R)
+Proof:
+  Using “Mutual inclusion”:
+    Subproof for `R ⊆ R ⨾ (𝕀 ∩ R ˘ ⨾ R)`:
+        R ⨾ (𝕀 ∩ R ˘ ⨾ R)
+      ⊇⟨“Modal rule”⟩
+        (R) ⨾ 𝕀  ∩ R
+      =⟨“Identity of ⨾”⟩
+        (R) ⨾ 𝕀  ∩ R ⨾ 𝕀
+      =⟨“Idempotency of ∩”⟩
+        (R) ⨾ 𝕀 
+      =⟨“Identity of ⨾”⟩
+        R
+    Subproof for `R ⨾ (𝕀 ∩ R ˘ ⨾ R)  ⊆ R `:
+        R ⨾ (𝕀 ∩ R ˘ ⨾ R)
+      ⊆⟨ “Sub-distributivity of ⨾ over ∩” ⟩
+        R ⨾ 𝕀 ∩ R ⨾ (R ˘ ⨾ R)
+      =⟨ “Identity of ⨾” ⟩
+        R ∩ (R ⨾ R ˘ ⨾ R)
+      =⟨ “Set inclusion via ∩” with “Co-difunctionality” ⟩
+        R
+Theorem “Symmetry of +”: ∀ m • ∀ n • m + n = n + m
+Proof:
+  Using “Induction over ℕ”:
+    Subproof:
+      For any `n : ℕ`:
+          0 + n
+        =⟨ “Definition of +” ⟩
+          n
+        =⟨ “Right-identity of +”  ⟩
+          n + 0
+    Subproof:
+      For any `m : ℕ` satisfying “IndHyp” `∀ n • m + n = n + m`:
+        For any `n : ℕ`:
+            (m + 1) + n
+          =⟨ “Definition of +” ⟩
+            (m + n) + 1
+          =⟨ Assumption “IndHyp” ⟩
+            (n + m) + 1
+          =⟨ “Definition of +” ⟩
+            (n + 1) + m
+          =⟨ “Shifting successor over +” ⟩
+            n + (m + 1)
+Theorem “Univalence of composition”:
+     univalent R ⇒ univalent S ⇒ univalent (R ⨾ S)
+Proof:
+  Assuming `univalent R` and using with “Definition of univalence”,
+           `univalent S` and using with “Definition of univalence”:
+    Using “Definition of univalence”:
+        (R ⨾ S) ˘ ⨾ (R ⨾ S)
+      =⟨ “Converse of ⨾” ⟩
+        (S ˘ ⨾ R ˘) ⨾ R ⨾ S
+      =⟨ “Associativity of ⨾” ⟩
+        S ˘ ⨾ (R ˘ ⨾ R) ⨾ S
+      ⊆⟨ “Monotonicity of ⨾” with “Monotonicity of ⨾” with
+         Assumption `univalent R` ⟩
+        S ˘ ⨾ 𝕀 ⨾ S
+      =⟨ “Identity of ⨾” ⟩
+        S ˘ ⨾ S
+      ⊆⟨ Assumption `univalent S` ⟩
+        𝕀
+
