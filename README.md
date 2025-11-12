@@ -535,3 +535,59 @@ Proof:
     x ⦗ (Dom S ⩤ R) ⦘ y ∨ x ⦗ S ⦘ y
   ≡⟨ “Relationship via ⩤” ⟩
     (¬ (x ∈ Dom S) ∧ x ⦗ R ⦘ y) ∨ x ⦗ S ⦘ y
+Theorem “Cancellation of ·”:
+    c ≠ 0 ⇒ (c · a = c · b  ≡  a = b)
+Proof:
+  By cases: `c = 0`, `c = suc (pred c)`
+    Completeness: By “Zero or successor of predecessor”
+    Case `c = 0`:
+        c ≠ 0 ⇒ (c · a = c · b  ≡  a = b)
+      =⟨ Assumption `c = 0`⟩
+        0 ≠ 0 ⇒ (c · a = c · b  ≡  a = b)
+      =⟨ “Irreflexivity of ≠” ⟩
+        false ⇒ (c · a = c · b  ≡  a = b)
+      =⟨ “ex falso quodlibet” ⟩
+        true
+    Case `c = suc (pred c)`:
+         c ≠ 0 ⇒ (c · a = c · b  ≡  a = b)
+      =⟨ Assumption `c = suc (pred c)`⟩
+         suc (pred c) ≠ 0 ⇒ (suc (pred c) · a = suc (pred c) · b  ≡  a = b)
+      =⟨ “Definition of ≠” ⟩
+         ¬ (suc (pred c) = 0) ⇒ (suc (pred c) · a = suc (pred c) · b  ≡  a = b)
+      =⟨ “Zero is not successor” ⟩
+         ¬ (false) ⇒ (suc (pred c) · a = suc (pred c) · b  ≡  a = b)
+      =⟨ “Negation of `false`” ⟩
+         true ⇒ (suc (pred c) · a = suc (pred c) · b  ≡  a = b)
+      =⟨ “Cancellation of multiplication with successor” ⟩
+         true ⇒ true
+      =⟨ “Reflexivity of ⇒” ⟩
+         true    
+Lemma “Zero is not product of successors”:
+    suc a · suc b = 0  ≡  false
+Proof:
+  By cases: `a = 0`, `a = suc (pred a)`
+    Completeness: By “Zero or successor of predecessor”
+    Case `a = 0`:
+        suc a · suc b = 0  ≡  false
+      ≡⟨ Assumption `a = 0` ⟩
+        suc 0 · suc b = 0  ≡  false
+      ≡⟨ Fact `suc 0 = 1` ⟩
+        1 · suc b = 0  ≡  false
+      ≡⟨ “Identity of ·” ⟩
+        suc b = 0  ≡  false
+      ≡⟨ “Zero is not successor” ⟩
+        false  ≡  false
+      ≡⟨ “Reflexivity of ≡” ⟩
+        true
+    Case `a = suc (pred a)`:
+        suc a · suc b = 0  ≡  false
+      = ⟨ Assumption `a = suc (pred a)` ⟩
+        suc (suc (pred a)) · suc b = 0  ≡  false
+      = ⟨ “Definition of · for `suc`”  ⟩
+        suc b + suc (pred a) · suc b = 0  ≡  false
+      = ⟨ “Definition of + for `suc`”  ⟩
+        suc (b + suc (pred a) · suc b) = 0  ≡  false
+      = ⟨ “Zero is not successor” ⟩
+        false  ≡  false
+      = ⟨ “Reflexivity of ≡” ⟩
+        true
