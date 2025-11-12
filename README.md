@@ -417,3 +417,101 @@ Proof:
               (x ◃ xs) ▹ y = 𝜖
             ≡⟨ “Snoc is not empty” ⟩
               false
+Theorem (15.58) “At most via maximum”: x ≤ y  ≡  x ↑ y = y
+Proof:
+    x ↑ y = y
+  =⟨ “Antisymmetry of ≤” ⟩
+    x ↑ y ≤ y ∧ y ≤ x ↑ y
+  =⟨ “Maximum is upper bound” ⟩
+    true ∧ x ↑ y ≤ y
+  =⟨ “Identity of ∧” ⟩ 
+    x ↑ y ≤ y
+  =⟨ “Definition of ↑” ⟩ 
+    x ≤ y ∧ y ≤ y
+  =⟨ “Reflexivity of ≤” ⟩ 
+    x ≤ y ∧ true
+  =⟨ “Identity of ∧”  ⟩ 
+    x ≤ y
+Theorem “Modal rule”:    (Q ⨾ R) ∩ S ⊆ Q ⨾ (R ∩ Q ˘ ⨾ S)
+Proof:
+  Using “Relation inclusion”:
+    Subproof for `∀ a • ∀ c • a ⦗ (Q ⨾ R) ∩ S ⦘ c ⇒ a ⦗ (Q ∩ S ⨾ R ˘) ⨾ R ⦘ c`:
+      For any `a`, `c`:
+          a ⦗ (Q ∩ S ⨾ R ˘) ⨾ R ⦘ c
+        ≡⟨ “Relation composition” ⟩
+          ∃ b • a ⦗ (Q ∩ S ⨾ R ˘) ⦘ b ∧ b ⦗ R ⦘ c
+        ≡⟨ “Relation intersection” ⟩
+          ∃ b • (a ⦗ Q ⦘ b ∧ a ⦗ S ⨾ R ˘ ⦘ b) ∧ b ⦗ R ⦘ c
+        ≡⟨ “Relation composition” ⟩
+          ∃ b • a ⦗ Q ⦘ b ∧ (∃ x • a ⦗ S ⦘ x ∧ x ⦗ R ˘ ⦘ b) ∧ b ⦗ R ⦘ c
+        ≡⟨ “Relation converse” ⟩
+          ∃ b • a ⦗ Q ⦘ b ∧ (∃ x • a ⦗ S ⦘ x ∧ b ⦗ R ⦘ x) ∧ b ⦗ R ⦘ c
+        ⇐⟨ “Consequence”, “Monotonicity of ∃” with “Monotonicity of ∧” with “∃-Introduction” ⟩
+          ∃ b • a ⦗ Q ⦘ b ∧ (a ⦗ S ⦘ x ∧ b ⦗ R ⦘ x)[x ≔ c] ∧ b ⦗ R ⦘ c
+        ≡⟨ Substitution ⟩
+          ∃ b • a ⦗ Q ⦘ b ∧ (a ⦗ S ⦘ c ∧ b ⦗ R ⦘ c) ∧ b ⦗ R ⦘ c
+        ≡⟨ “Idempotency of ∧” ⟩
+          ∃ b • a ⦗ Q ⦘ b ∧ (a ⦗ S ⦘ c ∧ b ⦗ R ⦘ c)
+        ≡⟨ “Distributivity of ∧ over ∃” ⟩
+          (∃ b • a ⦗ Q ⦘ b ∧ b ⦗ R ⦘ c) ∧ a ⦗ S ⦘ c
+        ≡⟨ “Relation composition” ⟩
+          a ⦗ (Q ⨾ R) ⦘ c ∧ a ⦗ S ⦘ c
+        ≡⟨ “Relation intersection” ⟩
+          a ⦗ (Q ⨾ R) ∩ S ⦘ c
+Theorem “Surjectivity”:
+    surjective R  ≡  (∀ b • (∃ a • a ⦗ R ⦘ b))
+Proof:
+    surjective R
+  ≡⟨ “Definition of surjectivity” ⟩
+    𝕀 ⊆ R ˘ ⨾ R
+  ≡⟨ “Relation inclusion” ⟩
+    (∀ a • (∀ b • a ⦗ 𝕀 ⦘ b ⇒ a ⦗ R ˘ ⨾ R ⦘ b ) )
+  ≡⟨ “Trading for ∀” ⟩
+    (∀ a • (∀ b ❙ a ⦗ 𝕀 ⦘ b • a ⦗ R ˘ ⨾ R ⦘ b ) )
+  ≡⟨ “Relationship via 𝕀” ⟩
+    (∀ a • (∀ b ❙ a = b • a ⦗ R ˘ ⨾ R ⦘ b ) )
+  ≡⟨ “Reflexivity of =” ⟩
+    ∀ a • (∀ b ❙ b = a • a ⦗ R ˘ ⨾ R ⦘ b )
+  ≡⟨ “One-point rule for ∀” ⟩
+    ∀ a • (a ⦗ R ˘ ⨾ R ⦘ a)
+  ≡⟨ “Relation composition” ⟩
+    ∀ a • ∃ b • a ⦗ R ˘ ⦘ b ∧ b ⦗ R ⦘ a
+  ≡⟨ “Relation converse” ⟩
+    ∀ a • ∃ b • b ⦗ R ⦘ a ∧ b ⦗ R ⦘ a
+  ≡⟨ “Idempotency of ∧” ⟩
+    ∀ a • ∃ b • b ⦗ R ⦘ a
+Theorem “Injectivity”:
+       injective R
+    ≡  ∀ a₁ • ∀ a₂ • ∀ b • a₁ ⦗ R ⦘ b ∧ a₂ ⦗ R ⦘ b ⇒ a₁ = a₂
+Proof:
+    injective R
+  ≡⟨ “Definition of injectivity” ⟩
+    R ⨾ R ˘ ⊆ 𝕀
+  ≡⟨ “Relation inclusion” ⟩
+    ∀ a₁ • (∀ a₂ •  a₁ ⦗ R ⨾ R ˘ ⦘ a₂ ⇒ a₁ ⦗ 𝕀 ⦘ a₂ )
+  ≡⟨ “Relation composition” ⟩
+    ∀ a₁ • (∀ a₂ •  (∃ b • a₁ ⦗ R ⦘ b ∧ b ⦗ R ˘ ⦘ a₂ ) ⇒ a₁ ⦗ 𝕀 ⦘ a₂ )
+  ≡⟨ “Relation converse” ⟩
+    ∀ a₁ • (∀ a₂ •  (∃ b • a₁ ⦗ R ⦘ b ∧ a₂ ⦗ R ⦘ b ) ⇒ a₁ ⦗ 𝕀 ⦘ a₂ )
+  ≡⟨ “Witness” ⟩
+    ∀ a₁ • ∀ a₂ •  ∀ b • a₁ ⦗ R ⦘ b ∧ a₂ ⦗ R ⦘ b  ⇒ a₁ ⦗ 𝕀 ⦘ a₂
+  ≡⟨ “Relationship via 𝕀” ⟩
+    ∀ a₁ • ∀ a₂ •  ∀ b • a₁ ⦗ R ⦘ b ∧ a₂ ⦗ R ⦘ b  ⇒ a₁ = a₂
+Theorem “Univalence of composition”:
+     univalent R ⇒ univalent S ⇒ univalent (R ⨾ S)
+Proof:
+  Assuming `univalent R` and using with “Definition of univalence”,
+           `univalent S` and using with “Definition of univalence”:
+    Using “Definition of univalence”:
+        (R ⨾ S) ˘ ⨾ (R ⨾ S)
+      =⟨ “Converse of ⨾” ⟩
+        (S ˘ ⨾ R ˘) ⨾ R ⨾ S
+      =⟨ “Associativity of ⨾” ⟩
+        S ˘ ⨾ (R ˘ ⨾ R) ⨾ S
+      ⊆⟨ “Monotonicity of ⨾” with “Monotonicity of ⨾” with
+         Assumption `univalent R` ⟩
+        S ˘ ⨾ 𝕀 ⨾ S
+      =⟨ “Identity of ⨾” ⟩
+        S ˘ ⨾ S
+      ⊆⟨ Assumption `univalent S` ⟩
+        𝕀
