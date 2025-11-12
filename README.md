@@ -245,4 +245,113 @@ Proof:
         S ˘ ⨾ S
       ⊆⟨ Assumption `univalent S` ⟩
         𝕀
+Theorem “Squaring”:
+      true
+    ⇒⁅  i := 0 ⍮
+        s := 0 ⍮
+        d := 1 ⍮
+        while i ≠ n
+          do
+            s := s + d ⍮
+            d := d + 2 ⍮
+            i := i + 1
+          od
+       ⁆ s = n · n
+Proof:
+    true   ╍╍╍  Precondition
+  ≡⟨ “Idempotency of ∧” ⟩
+    true ∧ true 
+  ≡⟨ Fact `1 = 0 + 0 + 1`, Fact `0 = 0 · 0` ⟩
+    1 = 0 + 0 + 1 ∧ 0 = 0 · 0
+  ⇒⁅ i := 0 ⁆⟨ “Assignment” with substitution ⟩
+    1 = i + i + 1 ∧ 0 = i · i
+  ⇒⁅ s := 0 ⁆⟨ “Assignment” with substitution ⟩
+    1 = i + i + 1 ∧ s = i · i
+  ⇒⁅ d := 1 ⁆⟨ “Assignment” with substitution ⟩
+    d = i + i + 1 ∧ s = i · i      ╍╍╍  Invariant
+  ⇒⁅ while i ≠ n do
+        s := s + d ⍮
+        d := d + 2 ⍮
+        i := i + 1
+      od ⁆⟨ “While” with subproof:
+          i ≠ n ∧ d = i + i + 1 ∧ s = i · i  ╍╍╍  Loop condition and invariant
+        ⇒⟨ “Weakening” (3.76b) ⟩
+          d = i + i + 1 ∧ s = i · i
+        =⟨ “Cancellation of +” ⟩   
+          d = i + i + 1 ∧ s + d = i · i + d
+        =⟨ Substitution ⟩ 
+          d = i + i + 1 ∧ (s + d = i · i + z)[z ≔ d]
+        ≡⟨ “Replacement” (3.84a) ⟩ 
+          d = i + i + 1 ∧ (s + d = i · i + z)[z ≔ i + i + 1]
+        ⇒⁅ s := s + d ⁆⟨ “Assignment” with substitution ⟩
+          d = i + i + 1 ∧ s = i · i + i + i + 1
+        ≡⟨ “Cancellation of +” ⟩
+          d + 2 = i + i + 1 + 2 ∧ s = i · i + i + i + 1
+        ⇒⁅ d := d + 2 ⁆⟨ “Assignment” with substitution ⟩
+          d = i + i + 1 + 2 ∧ s = i · i + i + i + 1
+        ≡⟨ “Distributivity of · over +”, “Identity of ·” ⟩
+          d = i + i + 1 + 2 ∧ s = (i + 1) · (i + 1)
+        ⇒⁅ i := i + 1 ⁆⟨ “Assignment” with substitution
+                         and Fact `1 + 1 = 2` ⟩
+          d = i + i + 1 ∧ s = i · i   ╍╍╍  Invariant
+    ⟩
+    ¬ (i ≠ n) ∧ d = i + i + 1 ∧ s = i · i  ╍╍╍ Negated loop condition, and invariant
+  ≡⟨ “Definition of ≠”, “Double negation” ⟩
+    (i = n) ∧ d = i + i + 1 ∧ s = i · i
+  ⇒⟨ “Weakening”  (3.76b) ⟩
+    (i = n) ∧ s = i · i
+  =⟨ Substitution ⟩
+     i = n  ∧ (s = z · z)[z ≔ i]
+  =⟨ “Replacement” (3.84a) , Substitution ⟩
+     i = n  ∧ s = n · n
+  ⇒⟨ “Weakening” (3.76b) ⟩ 
+    s = n · n    ╍╍╍  Postcondition
 
+Theorem “Summing up”:
+      true
+    ⇒⁅  s := 0 ⍮
+        i := 0 ⍮
+        while i ≠ n
+          do
+            s := s + f i ⍮
+            i := i + 1
+          od
+      ⁆
+      s = ∑ j : ℕ ❙ j < n • f j
+Proof:
+    true
+  =⟨ “Reflexivity of =” ⟩ 
+    0 = 0
+  =⟨ “Nothing is less than zero” , “Empty range for ∑” ⟩ 
+    0 = ∑ j : ℕ ❙ j < 0 • f j
+  ⇒⁅ s := 0 ⁆⟨ “Assignment” with substitution ⟩
+    s = ∑ j : ℕ ❙ j < 0 • f j
+  ⇒⁅ i := 0 ⁆⟨ “Assignment” with substitution ⟩ 
+    s = ∑ j : ℕ ❙ j < i • f j
+  ⇒⁅ while i ≠ n do
+        s := s + f i ⍮
+        i := i + 1
+      od ⁆⟨ “While” with subproof:
+          i ≠ n ∧ s = ∑ j : ℕ ❙ j < i • f j  ╍╍╍  Loop condition and invariant
+        ⇒⟨ “Weakening” (3.76b) ⟩ 
+          s = (∑ j : ℕ ❙ j < i • f j) 
+        =⟨ Substitution, “Cancellation of +” ⟩ 
+          s + f i = (∑ j : ℕ ❙ j < i • f j) + (f j)[j ≔ i]
+        =⟨ “Split off term from ∑ at top” ⟩
+          s + f i = ∑ j : ℕ ❙ j < suc i • f j
+        =⟨ “Successor” ⟩    
+          s + f i = ∑ j : ℕ ❙ j < i + 1 • f j
+        ⇒⁅ s := s + f i ⁆⟨ “Assignment” with substitution ⟩
+          s = ∑ j : ℕ ❙ j < i + 1 • f j       
+        ⇒⁅ i := i + 1 ⁆⟨ “Assignment” with substitution ⟩
+          s = ∑ j : ℕ ❙ j < i • f j   ╍╍╍  Invariant
+    ⟩ 
+    ¬ (i ≠ n) ∧ s = ∑ j : ℕ ❙ j < i • f j
+  =⟨ “Definition of ≠”, “Double negation” ⟩
+    (i = n) ∧ s = ∑ j : ℕ ❙ j < i • f j 
+  =⟨ Substitution ⟩
+    (i = n) ∧ (s = ∑ j : ℕ ❙ j < z • f j)[z ≔ i]
+  =⟨ “Replacement” (3.84a) , Substitution ⟩
+    (i = n) ∧ (s = ∑ j : ℕ ❙ j < n • f j)
+  ⇒⟨ “Weakening” (3.76b) ⟩
+    s = ∑ j : ℕ ❙ j < n • f j 
